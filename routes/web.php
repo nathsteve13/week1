@@ -56,3 +56,7 @@ Route::get('/admin/{type}', [TestController::class, 'admin'])->name('admin');
 
 Route::resource('/categories', CategoryController::class);
 Route::resource('/foods', FoodController::class);
+
+Route::get('category/totalfood', [CategoryController::class, 'showTotalFood'])->name('category.totalfood');
+
+Route::get('/test_query', [TestController::class, 'testQuery'])->name('testQuery');

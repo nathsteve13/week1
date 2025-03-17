@@ -3,9 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
+    public function showTotalFood() {
+        $categories = DB::table('foods')
+            ->join('categories', 'foods.category_id', '=', 'categories.id')
+            ->select('categories.name', DB::raw('count(foods.id) as total_foods'))
+            ->groupBy('categories.name')
+            ->get();
+
+        return view('category.totalfood', compact('categories'));
+    }
+
     /**
      * Display a listing of the resource.
      */

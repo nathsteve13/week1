@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TestController extends Controller
 {
@@ -33,4 +34,18 @@ class TestController extends Controller
             return "Portal management: daftar member";
         }
     }
+
+    public function testQuery(){
+        $foods = DB::table('foods')
+        ->select('foods.category_id', DB::raw('count(*) as count'))
+        ->groupBy('foods.category_id')
+        ->where('foods.price', '>', function($query) {
+            $query->select(DB::raw('avg(price)'))
+              ->from('foods');
+        })
+        ->get();
+        return $foods;
+    }
+
+    
 }
