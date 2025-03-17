@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FoodController;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/welcome', [TestController::class, 'welcome'])->name('home');
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,30 +47,12 @@ Route::get('/search', function () {
     return "halaman search";
 });
 
-Route::get('/welcome', function () {
-    return "Selamat datang";
-});
 
-Route::get('/before_order', function () {
-    return "Pilih dine in atau take away";
-});
+Route::get('/before_order', [TestController::class, 'beforeOrder'])->name('beforeOrder');
 
-Route::get('/menu/dinein', function () {
-    return "Daftar menu dine-in";
-});
+Route::get('/menu/{type}', [TestController::class, 'menu'])->name('menu');
 
-Route::get('/menu/takeaway', function () {
-    return "Daftar menu take-away";
-});
+Route::get('/admin/{type}', [TestController::class, 'admin'])->name('admin');
 
-Route::get('/admin/categories', function () {
-    return "Portal management: daftar kategori";
-});
-
-Route::get('/admin/orders', function () {
-    return "Portal management: daftar order";
-});
-
-Route::get('/admin/member', function () {
-    return "Portal management: daftar member";
-});
+Route::resource('/categories', CategoryController::class);
+Route::resource('/foods', FoodController::class);
