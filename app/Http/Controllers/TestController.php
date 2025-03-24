@@ -11,6 +11,9 @@ class TestController extends Controller
         return "tampilan splash screen berisi judul aplikasi, nama developer, dan logo aplikasi";
     }
 
+    public function dashboard() {
+        return view('dashboard');
+    }
     function menu($type) {
         if ($type == "dinein") {
             return "Daftar menu dine-in";

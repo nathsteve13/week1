@@ -60,3 +60,5 @@ Route::resource('/foods', FoodController::class);
 Route::get('category/totalfood', [CategoryController::class, 'showTotalFood'])->name('category.totalfood');
 
 Route::get('/test_query', [TestController::class, 'testQuery'])->name('testQuery');
+
+Route::get('/dashboard', [TestController::class, 'dashboard'])->name('dashboard');
