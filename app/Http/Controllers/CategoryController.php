@@ -22,6 +22,18 @@ class CategoryController extends Controller
         return view('category.totalfood', compact('categories'));
     }
 
+    public function showListFoods()
+    {
+        $category = Category::find($_POST['idcat']);
+        $name = $category->name;
+        $data = $category->food;
+        return response()->json(array(
+                'status' => 'oke',
+                'title' => $name.' Food List',
+                'body' => view('category.showListFood', compact('name', 'data'))->render()
+              ), 200);
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -19,7 +19,13 @@
                         <td><button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#imageModal-{{ $category['id'] }}">
                                 Image
-                            </button></td>
+                            </button>
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detailModal"
+                                onclick="showDetail({{ $category['id'] }})">
+                                Details
+                            </button>
+
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -50,4 +56,47 @@
             </div>
         </div>
     @endforeach
+
+    <!-- Modal -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="DetailModalLabel">List of </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="detail-title"></div>
+                    <div id="detail-body"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDetail(id) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('category.showListFoods') }}',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'idcat': id,
+                },
+                success: function(data) {
+                    $('#DetailModalLabel').text(data.title || 'Details');
+                    $('#detail-title').html(data.title || 'No Title Available');
+                    $('#detail-body').html(data.body || 'No Details Available');
+
+                    $('#detailModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching details:', error);
+                    alert('Failed to fetch details. Please try again.');
+                }
+            });
+        }
+    </script>
 @endsection
