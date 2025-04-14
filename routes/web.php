@@ -18,10 +18,6 @@ use App\Http\Controllers\CategoryController;
 
 Route::get('/welcome', [TestController::class, 'welcome'])->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/hello', function () {
     return view('hello');
 });
@@ -61,4 +57,4 @@ Route::get('category/totalfood', [CategoryController::class, 'showTotalFood'])->
 
 Route::get('/test_query', [TestController::class, 'testQuery'])->name('testQuery');
 
-Route::get('/dashboard', [TestController::class, 'dashboard'])->name('dashboard');
+Route::get('/', [TestController::class, 'dashboard'])->name('dashboard');

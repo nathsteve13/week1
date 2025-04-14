@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
     public function showTotalFood() {
-        $categories = DB::table('foods')
-            ->join('categories', 'foods.category_id', '=', 'categories.id')
-            ->select('categories.name', DB::raw('count(foods.id) as total_foods'))
-            ->groupBy('categories.name')
-            ->get();
+        $categories = Category::all()
+            ->map(function ($category) {
+            return [
+                'id' => $category['id'],
+                'name' => $category['name'],
+                'image' => $category['image'],
+            ];
+            })
+            ->toArray();
 
         return view('category.totalfood', compact('categories'));
     }

@@ -16,6 +16,18 @@
                     </a>
                 </li>
                 <!-- Add more sidebar menu items as needed -->
+                <li class="nav-item menu-open">
+                    <a href="{{route('foods.index')}}" class="nav-link active">
+                        <i class="nav-icon bi bi-basket"></i>
+                        <p>Foods</p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open">
+                    <a href="{{ route('category.totalfood')}}" class="nav-link active">
+                        <i class="nav-icon bi bi-tags"></i>
+                        <p>Categories</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

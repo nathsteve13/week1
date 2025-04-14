@@ -13,8 +13,8 @@ class Food extends Model
     public $timestamps = true;
     protected $fillable = ['name', 'nutrition_fact', 'description','price', 'category_id'];
 
-    // public function category()
-    // {
-    //     return $this->belongsTo(Category::class);
-    // }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
