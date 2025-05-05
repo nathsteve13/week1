@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,7 +48,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -55,7 +56,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $data = new Category();
+            $data->name = $request->get('name');
+            $data->save();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Category created successfully!');
+        } catch(Exception $ex) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to create category. Please try again.');
+        }
     }
 
     /**

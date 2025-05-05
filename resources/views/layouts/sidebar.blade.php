@@ -22,12 +22,36 @@
                         <p>Foods</p>
                     </a>
                 </li>
-                <li class="nav-item menu-open">
-                    <a href="{{ route('category.totalfood')}}" class="nav-link active">
+                <li class="nav-item">
+                    <a href="#categoriesSubmenu" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="categoriesSubmenu">
                         <i class="nav-icon bi bi-tags"></i>
-                        <p>Categories</p>
+                        <p>
+                            Categories
+                            <i class="right bi bi-chevron-down"></i>
+                        </p>
                     </a>
+                    <ul class="nav collapse" id="categoriesSubmenu">
+                        <li class="nav-item">
+                            <a href="{{ route('category.totalfood') }}" class="nav-link">
+                                <i class="bi bi-circle nav-icon"></i>
+                                <p>Total Food</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('category.showListFoods') }}" class="nav-link">
+                                <i class="bi bi-circle nav-icon"></i>
+                                <p>Show List Food</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('categories.create') }}" class="nav-link">
+                                <i class="bi bi-circle nav-icon"></i>
+                                <p>New Categories</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                
             </ul>
         </nav>
     </div>
