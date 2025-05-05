@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Food;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FoodController extends Controller
 {
@@ -16,13 +18,13 @@ class FoodController extends Controller
         return view('foods.index', compact('foods'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('foods.create', compact('categories'));
     }
 
     /**
@@ -30,7 +32,35 @@ class FoodController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'nutrition_fact' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            Food::create([
+                'name' => $request->name,
+                'nutrition_fact' => $request->nutrition_fact,
+                'description' => $request->description,
+                'price' => $request->price,
+                'category_id' => $request->category_id,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('foods.index')->with('success', 'Food created successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('foods.create')
+                ->with('error', 'An error occurred while creating the food: ' . $e->getMessage());
+        }
     }
 
     /**

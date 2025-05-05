@@ -69,7 +69,7 @@ class CategoryController extends Controller
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Category created successfully!');
+            return redirect()->route('category.totalfood')->with('success', 'Category created successfully!');
         } catch(Exception $ex) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to create category. Please try again.');

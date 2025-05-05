@@ -2,7 +2,17 @@
 
 @section('content')
     <div class="container">
+        
+        {{-- Success Message --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <h1>Food List</h1>
+        <a href="{{ route('foods.create') }}" class="btn btn-success mb-3">Add New Food</a>
         <table class="table table-bordered">
             <thead>
                 <tr>
