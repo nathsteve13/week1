@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    public function showTotalFood() {
+    public function showTotalFood()
+    {
         $categories = Category::all()
             ->map(function ($category) {
-            return [
-                'id' => $category['id'],
-                'name' => $category['name'],
-                'image' => $category['image'],
-            ];
+                return [
+                    'id' => $category['id'],
+                    'name' => $category['name'],
+                    'image' => $category['image'],
+                ];
             })
             ->toArray();
 
@@ -28,11 +29,14 @@ class CategoryController extends Controller
         $category = Category::find($_POST['idcat']);
         $name = $category->name;
         $data = $category->food;
-        return response()->json(array(
+        return response()->json(
+            [
                 'status' => 'oke',
-                'title' => $name.' Food List',
-                'body' => view('category.showListFood', compact('name', 'data'))->render()
-              ), 200);
+                'title' => $name . ' Food List',
+                'body' => view('category.showListFood', compact('name', 'data'))->render(),
+            ],
+            200,
+        );
     }
 
     /**
@@ -57,7 +61,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
         ]);
 
         try {
@@ -70,7 +74,7 @@ class CategoryController extends Controller
             DB::commit();
 
             return redirect()->route('category.totalfood')->with('success', 'Category created successfully!');
-        } catch(Exception $ex) {
+        } catch (Exception $ex) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to create category. Please try again.');
         }
@@ -87,9 +91,10 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        return view('category.edit', compact('category'));
     }
 
     /**
@@ -97,7 +102,24 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $category = Category::find($id);
+            $category->update(['name' => $request['name']]);
+            $category->save();
+
+            DB::commit();
+
+            return redirect()->route('category.totalfood')->with('success', 'Category updated successfully!');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $e);
+        }
     }
 
     /**
@@ -105,6 +127,22 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $category = Category::find($id);
+            if ($category) {
+                $category->food()->delete();
+                $category->delete();
+                DB::commit();
+                return redirect()->route('category.totalfood')->with('success', 'Category deleted successfully!');
+            } else {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Category not found.');
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to delete category. Please try again.'.$e);
+        }
     }
 }

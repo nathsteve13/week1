@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        
+
         {{-- Success Message --}}
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -34,6 +34,19 @@
                                 onclick="showDetail({{ $category['id'] }})">
                                 Details
                             </button>
+                            <a href="{{ route('category.edit', $category['id']) }}" class="btn btn-warning">
+                                Edit
+                            </a>
+                            <a href="{{ route('category.destroy', $category['id']) }}" class="btn btn-danger"
+                                onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this category?')) document.getElementById('delete-form-{{ $category['id'] }}').submit();">
+                                Delete
+                            </a>
+                            <form id="delete-form-{{ $category['id'] }}"
+                                action="{{ route('categories.destroy', $category['id']) }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
 
                         </td>
                     </tr>
@@ -49,7 +62,8 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="imageModalLabel">Gambar untuk Kategori {{ $category['name'] }}</h1>
+                        <h1 class="modal-title fs-5" id="imageModalLabel">Gambar untuk Kategori {{ $category['name'] }}
+                        </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

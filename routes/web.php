@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,9 +53,15 @@ Route::get('/admin/{type}', [TestController::class, 'admin'])->name('admin');
 
 Route::resource('/categories', CategoryController::class);
 Route::resource('/foods', FoodController::class);
+Route::resource('/orders', OrderController::class);
+
 
 Route::get('/category/{id}/foods', [CategoryController::class, 'showFoodByCategory']);
 Route::get('category/totalfood', [CategoryController::class, 'showTotalFood'])->name('category.totalfood');
+
+Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
+Route::put('/category/update/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::delete('/category/destroy/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
 Route::post("/category/showListFoods",
             [CategoryController::class, 'showListFoods'])
